@@ -206,7 +206,7 @@ namespace TPSocket.Properties
             this.MessageSaisit.Location = new System.Drawing.Point(12, 108);
             this.MessageSaisit.Multiline = true;
             this.MessageSaisit.Name = "MessageSaisit";
-            this.MessageSaisit.Size = new System.Drawing.Size(308, 62);
+            this.MessageSaisit.Size = new System.Drawing.Size(308, 70);
             this.MessageSaisit.TabIndex = 15;
             this.MessageSaisit.TextChanged += new System.EventHandler(this.textBox5_TextChanged_1);
             // 
