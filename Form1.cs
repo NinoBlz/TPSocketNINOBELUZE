@@ -107,17 +107,50 @@ namespace TPSocket.Properties
 
         private void Cree_Click(object sender, EventArgs e)
         {
-            
+            try
+            {
+                //Création d'un Socket
+                SSocketUDP = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+
+                //Crée un Timeout
+                SSocketUDP.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 5000);
+
+
+                Destination = new IPEndPoint(IPAddress.Parse(this.IPDestination.Text), int.Parse(this.PortRCP.Text));
+                Reception = new IPEndPoint(IPAddress.Parse(this.IPReception.Text), int.Parse(this.PortDestinataire.Text));
+
+                SSocketUDP.Bind(Reception);
+            }
+
+            catch(SocketException SE)
+            {
+                this.MessageR.Text = SE.ToString();
+            }
         }
 
         private void Fermer_Click(object sender, EventArgs e)
         {
-            
+            try
+            {
+                SSocketUDP.Close();
+            }
+            catch (SocketException SE)
+            {
+                this.MessageR.Text = SE.ToString();
+            }
         }
 
         private void Envoye_Click(object sender, EventArgs e)
         {
-            
+            try
+            {
+                var msg = Encoding.ASCII.GetBytes(this.MessageSaisit.Text);
+                SSocketUDP.SendTo(msg, Destination);
+            }
+            catch (SocketException SE)
+            {
+                this.MessageR.Text = SE.ToString();
+            }
         }
 
         private void Reception_Click(object sender, EventArgs e)
@@ -126,11 +159,34 @@ namespace TPSocket.Properties
 
         }
 
+        private bool ReceptionT()
+        {
+            try
+            {
+                var buffer = new byte[1024];
+                SSocketUDP.ReceiveFrom(buffer, ref Reception);
+                this.MessageR.Text = Encoding.ASCII.GetString(buffer);
+                return SSocketUDP.Available == 0;
+            }
+            catch (SocketException SE)
+            {
+                this.MessageR.Text = SE.ToString();
+            }
+            return false;
 
+
+        }
 
         private async void CheckUp()
         {
-            
+            Timer.Start();
+            while (Timer.ElapsedMilliseconds < 1500) ;
+            Timer.Stop();
+
+            if (!ReceptionT())
+            {
+                CheckUp();
+            }
         }
     }
 
