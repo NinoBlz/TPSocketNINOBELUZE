@@ -107,15 +107,12 @@ namespace TPSocket.Properties
 
         private void Cree_Click(object sender, EventArgs e)
         {
+
             try
             {
-                //Création d'un Socket
+
                 SSocketUDP = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-
-                //Crée un Timeout
                 SSocketUDP.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 5000);
-
-
                 Destination = new IPEndPoint(IPAddress.Parse(this.IPDestination.Text), int.Parse(this.PortRCP.Text));
                 Reception = new IPEndPoint(IPAddress.Parse(this.IPReception.Text), int.Parse(this.PortDestinataire.Text));
 
@@ -123,10 +120,17 @@ namespace TPSocket.Properties
             }
 
             catch(SocketException SE)
+
             {
                 this.MessageR.Text = SE.ToString();
             }
+
+
         }
+
+
+
+
 
         private void Fermer_Click(object sender, EventArgs e)
         {
@@ -139,6 +143,10 @@ namespace TPSocket.Properties
                 this.MessageR.Text = SE.ToString();
             }
         }
+
+
+
+
 
         private void Envoye_Click(object sender, EventArgs e)
         {
@@ -153,11 +161,19 @@ namespace TPSocket.Properties
             }
         }
 
+
+
+
+
+
         private void Reception_Click(object sender, EventArgs e)
         {
             Task.Run(() => CheckUp());
 
         }
+
+
+
 
         private bool ReceptionT()
         {
@@ -166,6 +182,7 @@ namespace TPSocket.Properties
                 var buffer = new byte[1024];
                 SSocketUDP.ReceiveFrom(buffer, ref Reception);
                 this.MessageR.Text = Encoding.ASCII.GetString(buffer);
+
                 return SSocketUDP.Available == 0;
             }
             catch (SocketException SE)
@@ -180,8 +197,12 @@ namespace TPSocket.Properties
         private async void CheckUp()
         {
             Timer.Start();
+
             while (Timer.ElapsedMilliseconds < 1500) ;
+
             Timer.Stop();
+
+
 
             if (!ReceptionT())
             {

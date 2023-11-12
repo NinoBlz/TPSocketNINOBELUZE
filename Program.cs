@@ -8,6 +8,7 @@ using TPSocket.Properties;
 
 namespace TPSocket
 {
+
     internal class Program
     {
         [STAThread]
@@ -16,10 +17,10 @@ namespace TPSocket
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            // Créez une nouvelle instance de votre formulaire Form1
+
             Communication mainForm = new Communication();
 
-            // Appelez Application.Run pour démarrer l'application Windows Forms
+
             Application.Run(mainForm);
         }
     }

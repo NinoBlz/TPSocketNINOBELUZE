@@ -31,6 +31,8 @@ namespace TPSocket.Properties
             base.Dispose(disposing);
         }
 
+
+
         #region Windows Form Designer generated code
 
         /// <summary>
